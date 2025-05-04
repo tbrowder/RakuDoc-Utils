@@ -1,0 +1,11 @@
+#!/usr/bin/env raku
+
+use Rakudoc::Utils;
+
+if @*ARGS {
+    run-prog @*ARGS;
+}
+else {
+    show-help;
+}
+

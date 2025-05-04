@@ -2,6 +2,10 @@ use Test;
 
 my @modules = <
     Rakudoc::Utils
+    Rakudoc::Utils::Classes
+    Rakudoc::Utils::Listener
+    Rakudoc::Utils::Subs
+    Rakudoc::Utils::Vars
 >;
 
 plan @modules.elems;

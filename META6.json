@@ -6,17 +6,22 @@
   "build-depends": [
   ],
   "depends": [
+    "Pod::TreeWalker"
   ],
-  "description": "Provides routines to extract Rakudoc and convert to user-friendly classes for further processing.\n",
+  "description": "Provides routines to extract Rakudoc and convert to user-friendly classes for further processing.",
   "license": "Artistic-2.0",
   "name": "Rakudoc::Utils",
   "perl": "6.d",
   "provides": {
-    "Rakudoc::Utils": "lib/Rakudoc/Utils.rakumod"
+    "Rakudoc::Utils": "lib/Rakudoc/Utils.rakumod",
+    "Rakudoc::Utils::Classes": "lib/Rakudoc/Utils/Classes.rakumod",
+    "Rakudoc::Utils::Listener": "lib/Rakudoc/Utils/Listener.rakumod",
+    "Rakudoc::Utils::Subs": "lib/Rakudoc/Utils/Subs.rakumod",
+    "Rakudoc::Utils::Vars": "lib/Rakudoc/Utils/Vars.rakumod"
   },
   "resources": [
   ],
-  "source-url": "",
+  "source-url": "https://github.com/tbrowder/Rakudoc-Utils.git",
   "tags": [
   ],
   "test-depends": [

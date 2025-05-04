@@ -1,19 +1,23 @@
+[![Actions Status](https://github.com/tbrowder/Rakudoc-Utils/actions/workflows/linux.yml/badge.svg)](https://github.com/tbrowder/Rakudoc-Utils/actions) [![Actions Status](https://github.com/tbrowder/Rakudoc-Utils/actions/workflows/macos.yml/badge.svg)](https://github.com/tbrowder/Rakudoc-Utils/actions) [![Actions Status](https://github.com/tbrowder/Rakudoc-Utils/actions/workflows/windows.yml/badge.svg)](https://github.com/tbrowder/Rakudoc-Utils/actions)
+
 NAME
 ====
 
-**Rakudoc::Utils** - Provides routines to extract Rakudoc and convert to user-friendly classes for further processing.
+**Rakudoc::Utils** - Provides a binary and routines to extract Rakudoc and convert to classes for further word processing.
 
 SYNOPSIS
 ========
 
 ```raku
-use Rakudoc::Utils;
+$ rakudoc2wp <file with Rakudoc> ofile=/file/path [options...]
 ```
 
 DESCRIPTION
 ===========
 
-**Rakudoc::Utils** is ...
+**Rakudoc::Utils** is designed to simplify extracting Rakudoc from a file and converting it to a user-friendly tree structure for further processing.
+
+It is intended primarily to be used in PDF document production, but it should be useful in other roles.
 
 AUTHOR
 ======

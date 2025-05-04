@@ -2,20 +2,21 @@
 
 =head1 NAME
 
-B<Rakudoc::Utils> - Provides routines to extract Rakudoc and convert to user-friendly classes for further processing.
-
+B<Rakudoc::Utils> - Provides a binary and routines to extract Rakudoc and convert to classes for further word processing.
 
 =head1 SYNOPSIS
 
 =begin code :lang<raku>
-
-use Rakudoc::Utils;
-
+$ rakudoc2wp <file with Rakudoc> ofile=/file/path [options...] 
 =end code
 
 =head1 DESCRIPTION
 
-B<Rakudoc::Utils> is ...
+B<Rakudoc::Utils> is designed to simplify extracting Rakudoc from a file
+and converting it to a user-friendly tree structure for further processing.
+
+It is intended primarily to be used in PDF document production, but it
+should be useful in other roles.
 
 =head1 AUTHOR
 
