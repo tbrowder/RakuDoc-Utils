@@ -8,5 +8,6 @@ sub show-help is export {
 }
 
 sub run-prog(
+    @*ARGS,
     ) is export {
 }

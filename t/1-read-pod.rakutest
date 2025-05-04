@@ -1,0 +1,17 @@
+use Test;
+
+use Rakudoc::Utils;
+use Rakudoc::Utils::Classes;
+use Rakudoc::Utils::Listener;
+use Rakudoc::Utils::Subs;
+use Rakudoc::Utils::Vars;
+
+lives-ok {
+    run "raku", "-I.", "bin/rakudoc2wp";
+}, "with NO args (show help)";
+
+lives-ok {
+    run "raku", "-I.", "bin/rakudoc2wp", @*ARGS;
+}, "with args";
+
+done-testing;

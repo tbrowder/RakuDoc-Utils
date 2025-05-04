@@ -17,7 +17,13 @@ DESCRIPTION
 
 **Rakudoc::Utils** is designed to simplify extracting Rakudoc from a file and converting it to a user-friendly tree structure for further processing.
 
-It is intended primarily to be used in PDF document production, but it should be useful in other roles.
+It is intended primarily to be used in PDF document production, but it could also be useful in other roles.
+
+Note its initial release has only a limited capability in order to support my upcoming distribution **Slidemaker**. To do that it must handle the following Rakudoc elements:
+
+  * Title
+
+  * Subtitle
 
 AUTHOR
 ======

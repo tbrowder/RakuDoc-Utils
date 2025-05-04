@@ -2,7 +2,7 @@
 
 use Rakudoc::Utils;
 
-if @*ARGS {
+if @*ARGS.elems {
     run-prog @*ARGS;
 }
 else {
