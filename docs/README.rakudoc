@@ -1,0 +1,30 @@
+=begin pod
+
+=head1 NAME
+
+B<Rakudoc::Utils> - Provides routines to extract Rakudoc and convert to user-friendly classes for further processing.
+
+
+=head1 SYNOPSIS
+
+=begin code :lang<raku>
+
+use Rakudoc::Utils;
+
+=end code
+
+=head1 DESCRIPTION
+
+B<Rakudoc::Utils> is ...
+
+=head1 AUTHOR
+
+Tom Browder <tbrowder@acm.org>
+
+=head1 COPYRIGHT AND LICENSE
+
+© 2025 Tom Browder
+
+This library is free software; you may redistribute it or modify it under the Artistic License 2.0.
+
+=end pod

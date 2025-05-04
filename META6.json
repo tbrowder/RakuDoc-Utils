@@ -1,0 +1,25 @@
+{
+  "auth": "zef:tbrowder",
+  "authors": [
+    "Tom Browder"
+  ],
+  "build-depends": [
+  ],
+  "depends": [
+  ],
+  "description": "Provides routines to extract Rakudoc and convert to user-friendly classes for further processing.\n",
+  "license": "Artistic-2.0",
+  "name": "Rakudoc::Utils",
+  "perl": "6.d",
+  "provides": {
+    "Rakudoc::Utils": "lib/Rakudoc/Utils.rakumod"
+  },
+  "resources": [
+  ],
+  "source-url": "",
+  "tags": [
+  ],
+  "test-depends": [
+  ],
+  "version": "0.0.1"
+}
