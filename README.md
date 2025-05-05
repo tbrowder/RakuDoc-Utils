@@ -9,7 +9,7 @@ SYNOPSIS
 ========
 
 ```raku
-$ rakudoc2wp <file with Rakudoc> ofile=/file/path [options...]
+$ rakudoc2wp <file with Rakudoc> ofile=/file/path
 ```
 
 DESCRIPTION
@@ -19,11 +19,17 @@ DESCRIPTION
 
 It is intended primarily to be used in PDF document production, but it could also be useful in other roles.
 
-Note its initial release has only a limited capability in order to support my upcoming distribution **Slidemaker**. To do that it must handle the following Rakudoc elements:
+Note its initial release has only a limited capability in order to support my upcoming distribution **Slidemaker**. To do that, it must handle the following Rakudoc elements:
 
-  * Title
+    Formatting codes: L, B, I, U, O, S
+    Bare strings/paragraphs
 
-  * Subtitle
+    =Title
+    =Subtitle
+    =for para
+    =item     # not numbered, level 1 only
+    =begin/=end code/para/item/comment
+    =comment
 
 AUTHOR
 ======
