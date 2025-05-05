@@ -31,6 +31,28 @@ Note its initial release has only a limited capability in order to support my up
     =begin/=end code/para/item/comment
     =comment
 
+Classes
+=======
+
+The following classes are designed to group data for the user:
+
+### class Pg
+
+    class Pg {
+        has Vbloc @.vblocs;
+    }
+
+### class Vbloc
+
+    class Vbloc {
+        #| should only have one of the following
+        #| (any text chunks may be formatted or contain links)
+        has $.text; 
+        has $.list;
+        has $.title;
+        has $.subtitle;
+    }
+
 AUTHOR
 ======
 

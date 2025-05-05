@@ -34,6 +34,31 @@ Bare strings/paragraphs
 =comment
 =end code
 
+=head1 Classes
+
+The following classes are designed to group data for the
+user:
+
+=head3 class Pg
+=begin code
+class Pg {
+    has Vbloc @.vblocs;
+}
+=end code
+
+=head3 class Vbloc
+=begin code
+class Vbloc {
+    #| should only have one of the following
+    #| (any text chunks may be formatted or contain links)
+    has $.text; 
+    has $.list;
+    has $.title;
+    has $.subtitle;
+}
+=end code
+
+
 =head1 AUTHOR
 
 Tom Browder <tbrowder@acm.org>
