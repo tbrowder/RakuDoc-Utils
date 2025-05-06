@@ -2,19 +2,16 @@
 
 use Pod::Load;
 use Pod::TreeWalker;
-use Slidemaker;
-use Slidemaker::Listener;
+use Rakudoc::Utils;
+use Rakudoc::Utils::Listener;
 
 
-my $f = "resources/real-pod-example.rakudoc";
+my $f = "t/data/slides.rakudoc";
 my $pod-tree = load-pod $f.IO.slurp;
-my $L = Slidemaker::Listener.new;
+my $L = Rakudoc::Utils::Listener.new;
 
 my $o = Pod::TreeWalker.new: :listener($L);
 $o.walk-pod($pod-tree.head);
-#$o.walk-pod(@($pod-tree));
-#say "event: {$_.raku}" for $L.events;
-say "event: {$_.gist}" for $L.events;
 for $L.events {
     if $_ ~~ Hash {
         say "event is a hash";
