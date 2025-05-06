@@ -6,6 +6,7 @@
   "build-depends": [
   ],
   "depends": [
+    "Pod::Load",
     "Pod::TreeWalker"
   ],
   "description": "Provides routines to extract Rakudoc and convert to user-friendly classes for further processing.",
