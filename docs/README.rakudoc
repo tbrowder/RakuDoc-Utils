@@ -2,12 +2,13 @@
 
 =head1 NAME
 
-B<Rakudoc::Utils> - Provides a binary and routines to extract Rakudoc and convert to classes for further word processing.
+B<Rakudoc::Utils> - Provides routines to extract Rakudoc and convert to classes for further word processing.
 
 =head1 SYNOPSIS
 
 =begin code :lang<raku>
-$ rakudoc2wp <file with Rakudoc> ofile=/file/path 
+use Rakudoc::Utils;
+#...user code
 =end code
 
 =head1 DESCRIPTION

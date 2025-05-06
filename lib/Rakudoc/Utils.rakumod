@@ -5,6 +5,18 @@ use Pod::Load;
 
 use Rakudoc::Utils::Classes;
 
+sub read-pod(
+    $rfil, #= a file with rakudoc
+    :$debug,
+    ) is export {
+    unless $rfil.IO.r {
+        die "FATAL: Unable to read Input file '$rfil'";
+    }
+    my $pod = load $rfil;
+}
+
+=finish
+
 sub show-help() is export {
     print qq:to/HERE/;
     Usage: {$*PROGRAM.basename} <input file> ofile=/file/path 

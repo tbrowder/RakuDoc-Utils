@@ -1,0 +1,35 @@
+=begin pod
+
+=begin comment
+
+1.This pod is designed to describe the layout for a
+sample slide deck to be transformed into a PDF 
+document.
+
+The Config sections apply until superseded
+by another value. All applicable keys should be
+defined in the first one.
+
+=end comment
+
+=for Config
+= :color<2. blue> :height<1in> :width<full> 
+
+=slide 
+=Title My Title
+=Subtitle Why?
+
+=slide 
+=Title Next Slide
+
+A para with a B<BOLD> word
+
+=item Foo
+
+=begin item
+Bar
+
+A little Foo
+=end item
+
+=end pod

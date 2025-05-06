@@ -3,13 +3,14 @@
 NAME
 ====
 
-**Rakudoc::Utils** - Provides a binary and routines to extract Rakudoc and convert to classes for further word processing.
+**Rakudoc::Utils** - Provides routines to extract Rakudoc and convert to classes for further word processing.
 
 SYNOPSIS
 ========
 
 ```raku
-$ rakudoc2wp <file with Rakudoc> ofile=/file/path
+use Rakudoc::Utils;
+#...user code
 ```
 
 DESCRIPTION

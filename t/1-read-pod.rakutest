@@ -1,17 +1,20 @@
 use Test;
 
+use Pod::Load;
+use Pod::TreeWalker;
+
 use Rakudoc::Utils;
 use Rakudoc::Utils::Classes;
 use Rakudoc::Utils::Listener;
 use Rakudoc::Utils::Subs;
 use Rakudoc::Utils::Vars;
 
-lives-ok {
-    run "raku", "-I.", "bin/rakudoc2wp";
-}, "with NO args (show help)";
-
-lives-ok {
-    run "raku", "-I.", "bin/rakudoc2wp", @*ARGS;
-}, "with args";
+my $L = Rakudoc::Utils::Listener.new;
+my $f1 = "t/data/slides.rakudoc";
+my $pod-tree = load-pod $f1.IO.slurp;
+my $o = Pod::TreeWalker.new: :listener($L);
+$o.walk-pod: $pod-tree.head;
+my @events = $L.events;
+cmp-ok @events.elems, '>', 0;
 
 done-testing;
