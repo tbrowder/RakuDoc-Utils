@@ -6,8 +6,14 @@ use Rakudoc::Utils;
 use Rakudoc::Utils::Listener;
 use Rakudoc::Utils::Classes;
 
-my $f = "t/data/real-pod-example.rakudoc";
-my $pod-tree = load-pod $f.IO.slurp;
+my $f1 = "t/data/real-pod-example.rakudoc";
+my $f2 = "t/data/formatted-text.rakudoc";
+my $f3 = "t/data/list.rakudoc";
+my $f4 = "t/data/real-no-format.rakudoc";
+
+#my $pod-tree = load-pod $f1.IO.slurp;
+my $pod-tree = load-pod $f4.IO.slurp;
+
 my $L = Rakudoc::Utils::Listener.new;
 
 my $o = Pod::TreeWalker.new: :listener($L);
@@ -49,7 +55,6 @@ for %keys.keys.sort -> $k {
     next if $k ~~ /start|end/;
     say "  $k" if $debug;
 }
-
 
 =finish
 # this works:
