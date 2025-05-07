@@ -4,36 +4,50 @@ use Pod::Load;
 use Pod::TreeWalker;
 use Rakudoc::Utils;
 use Rakudoc::Utils::Listener;
+use Rakudoc::Utils::Classes;
 
-
-my $f = "t/data/slides.rakudoc";
+my $f = "t/data/real-pod-example.rakudoc";
 my $pod-tree = load-pod $f.IO.slurp;
 my $L = Rakudoc::Utils::Listener.new;
 
 my $o = Pod::TreeWalker.new: :listener($L);
 $o.walk-pod($pod-tree.head);
 
+my $debug = 0;
 my %keys;
 
-for $L.events {
-    if $_ ~~ Hash {
-        say "event is a hash";
-        say "event keys:";
-        for $_.keys -> $k {
-            say "  '$k'";
-            %keys{$k} = True;
-        }
+my $elevel = 0;
+for $L.events -> $e {
+    unless $e ~~ Hash {
+        die "FATAL: Event is NOT a Hash";
+    }
+
+    if $e<start>:exists {
+        ++$elevel;
+        say "| a start event at level $elevel...";
+    }
+    elsif $e<end>:exists {
+        --$elevel;
+        say "| an end event at level $elevel...";
     }
     else {
-        say "event is NOT a hash";
+        say "  inside an event at level $elevel...";
+    }
+
+    say "event is a hash" if $debug;
+    say "event keys:" if $debug;
+    my @k = $e.keys.sort;
+    for @k -> $k {
+        my $v = $e{$k};
+        say "  '$k' => '$v" if $debug;
+        %keys{$k} = True;
     }
 }
 
-say "summary of keys found (keys 'start' and 'end' are not shown):";
-#say "  $_" for %keys.keys.sort;
+say "summary of keys found (keys 'start' and 'end' are not shown):" if $debug;
 for %keys.keys.sort -> $k {
     next if $k ~~ /start|end/;
-    say "  $k";
+    say "  $k" if $debug;
 }
 
 
