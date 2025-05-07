@@ -1,3 +1,6 @@
+See David's formatting code handling in Pod::To::PDF::Lite
+(is an "atom" a chunk of formatted text? can I do that myself?)
+
 Create tests for the following:
 
 - text block with formatting codes
@@ -6,6 +9,7 @@ Create tests for the following:
 - list of two items
 
 - prologue config:
+  (should be a real config for a "slide" type)
 
     title colors
     slide border

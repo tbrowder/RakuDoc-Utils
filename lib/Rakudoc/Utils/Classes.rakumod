@@ -5,5 +5,8 @@ class Pg is export {
 }
 
 class Vbloc is export {
-    has @.lines is rw;
+    has $.text is rw;
+    has $.list is rw;
+    has $.title is rw;
+    has $.subtitle is rw;
 }
