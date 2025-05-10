@@ -2,7 +2,7 @@
 
 A B<bold> and I<italicized> 
 text example including some
-text with B<I<both>>.
+U<underlined text> with B<I<both>>.
 
 Also with a L<link|https://usafa-1975.org>.
 

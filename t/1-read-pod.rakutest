@@ -9,12 +9,25 @@ use Rakudoc::Utils::Listener;
 use Rakudoc::Utils::Subs;
 use Rakudoc::Utils::Vars;
 
-my $L = Rakudoc::Utils::Listener.new;
-my $f1 = "t/data/slide-chunks.rakudoc";
-my $pod-tree = load-pod $f1.IO.slurp;
-my $o = Pod::TreeWalker.new: :listener($L);
+my ($f, $L, $pod-tree, $o, @events);
+
+$L = Rakudoc::Utils::Listener.new;
+$f = "t/data/slide-chunks.rakudoc";
+$pod-tree = load-pod $f.IO.slurp;
+$o = Pod::TreeWalker.new: :listener($L);
 $o.walk-pod: $pod-tree.head;
-my @events = $L.events;
-cmp-ok @events.elems, '>', 0;
+@events = $L.events;
+cmp-ok @events.elems, '>', 0, "slide-chunks";
+
+$f = "t/data/formatted-text.rakudoc";
+$pod-tree = load-pod $f.IO.slurp;
+$o = Pod::TreeWalker.new: :listener($L);
+$o.walk-pod: $pod-tree.head;
+@events = $L.events;
+cmp-ok @events.elems, '>', 0, "formatted-text";
+
+if 1 {
+    say "  {$_.gist}" for @events;
+}
 
 done-testing;
