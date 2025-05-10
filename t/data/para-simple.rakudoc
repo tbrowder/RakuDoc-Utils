@@ -1,0 +1,7 @@
+=begin pod
+
+A B<bold> and I<italicized> 
+text example including some
+text with B<I<both>>.
+
+=end pod

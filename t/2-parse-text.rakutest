@@ -2,6 +2,7 @@ use Test;
 
 use Rakudoc::Utils;
 use Rakudoc::Utils::Subs;
+use Rakudoc::Utils::Listener;
 
 # original text in the test file:
 #   my $text-in  = "My U<old B< dog> has I< fleas>>.";
@@ -10,6 +11,8 @@ use Rakudoc::Utils::Subs;
 #   my $text-out = "My U<old> U<B<dog>> U<has> U<I<fleas>>.";
 
 my $f = "t/data/one-liner.rakudoc";
+# by sub ?
+
 is 1, 1;
 
 done-testing;
