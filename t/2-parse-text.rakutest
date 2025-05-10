@@ -1,5 +1,6 @@
 use Test;
 
+use Pod::Load;
 use Rakudoc::Utils;
 use Rakudoc::Utils::Subs;
 use Rakudoc::Utils::Listener;
@@ -9,9 +10,63 @@ use Rakudoc::Utils::Listener;
 
 # should be transformed into:
 #   my $text-out = "My U<old> U<B<dog>> U<has> U<I<fleas>>.";
-
-my $f = "t/data/one-liner.rakudoc";
 # by sub ?
+
+my ($f, $L, $pod-tree, $o, @events);
+
+$f = "t/data/one-liner.rakudoc";
+$L = Rakudoc::Utils::Listener.new;
+$pod-tree = load-pod $f.IO.slurp;
+$o = Pod::TreeWalker.new: :listener($L);
+$o.walk-pod: $pod-tree.head;
+@events = $L.events;
+cmp-ok @events.elems, '>', 0, "formatted-text";
+isa-ok @events.head, Hash;
+
+my $text = "";
+if 1 {
+    for @events -> $e {
+        if $e<start>:exists {
+            if $e<code-type>:exists {
+                my $code = $e<code-type>.trim;
+                $text ~= " " if $text;
+                $text ~= $code;
+                $text ~= '<';
+            }
+            say "start: ", $e.gist;
+        }
+        elsif $e<end>:exists {
+            if $e<code-type>:exists {
+                my $code = $e<code-type>.trim;
+                $text .= trim-trailing;
+                $text ~= '> ';
+            }
+            say "end: ", $e.gist;
+        }
+        elsif $e<text>:exists {
+            my $txt = $e<text>.trim;
+            my $lchar = $text.comb.tail;
+            if $lchar eq '<' {
+                $text ~= $txt ; # '>';
+            }
+            elsif $txt ~~ / '.'|'!'|'?' / {
+                $text .= trim-trailing;	
+                $text ~= $txt;
+            }
+            elsif $lchar eq ' ' {
+                $text ~= $txt;
+            }
+            else {
+                $text ~= $txt;
+            }
+            say "text: ", $txt;
+        }
+        else {
+            say "inside: ", $e.gist;
+        }
+    }
+}
+say "text: '$text'";
 
 is 1, 1;
 
