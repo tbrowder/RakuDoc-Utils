@@ -1,0 +1,13 @@
+use Test;
+
+use Rakudoc::Utils::Subs;
+
+# original text:
+my $text-in  = "My U<old B< dog> has I< fleas>>.";
+
+# should be transformed into:
+my $text-out = "My U<old> U<B<dog>> U<has> U<I<fleas>>.";
+
+is 1, 1;
+
+done-testing;

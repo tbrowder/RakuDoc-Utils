@@ -10,7 +10,7 @@ use Rakudoc::Utils::Subs;
 use Rakudoc::Utils::Vars;
 
 my $L = Rakudoc::Utils::Listener.new;
-my $f1 = "t/data/slides.rakudoc";
+my $f1 = "t/data/slide-chunks.rakudoc";
 my $pod-tree = load-pod $f1.IO.slurp;
 my $o = Pod::TreeWalker.new: :listener($L);
 $o.walk-pod: $pod-tree.head;
