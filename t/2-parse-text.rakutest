@@ -46,7 +46,10 @@ if 1 {
         elsif $e<text>:exists {
             my $txt = $e<text>.trim;
             my $lchar = $text.comb.tail;
-            if $lchar eq '<' {
+            if not $text {
+                $text ~= $txt;
+            }
+            elsif $lchar eq '<' {
                 $text ~= $txt ; # '>';
             }
             elsif $txt ~~ / '.'|'!'|'?' / {
@@ -57,7 +60,7 @@ if 1 {
                 $text ~= $txt;
             }
             else {
-                $text ~= $txt;
+                die "FATAL: Unexpected situation";
             }
             say "text: ", $txt;
         }
