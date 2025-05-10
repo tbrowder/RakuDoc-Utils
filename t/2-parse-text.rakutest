@@ -1,12 +1,15 @@
 use Test;
 
 use Rakudoc::Utils::Subs;
+use Rakudoc::Utils::Listener;
 
 # original text:
 my $text-in  = "My U<old B< dog> has I< fleas>>.";
 
 # should be transformed into:
 my $text-out = "My U<old> U<B<dog>> U<has> U<I<fleas>>.";
+
+# by sub ?
 
 is 1, 1;
 
