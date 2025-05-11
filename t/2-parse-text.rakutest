@@ -16,6 +16,8 @@ my ($f, $L, $pod-tree, $o, @events);
 
 $f = "t/data/one-liner.rakudoc";
 $L = Rakudoc::Utils::Listener.new;
+# note 'load-pod' adds another layer of surrounding pod so
+# you can use bare pod strings
 $pod-tree = load-pod $f.IO.slurp;
 $o = Pod::TreeWalker.new: :listener($L);
 $o.walk-pod: $pod-tree.head;
@@ -24,7 +26,7 @@ cmp-ok @events.elems, '>', 0, "formatted-text";
 isa-ok @events.head, Hash;
 
 my $text = "";
-if 1 {
+if 0 {
     for @events -> $e {
         if $e<start>:exists {
             if $e<code-type>:exists {

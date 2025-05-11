@@ -1,3 +1,7 @@
+Success! I recreated a chunk of formatted text with Pod::TreeWalker.
+
+Next step is to convert it to Atom form.
+	
 See David's formatting code handling in Pod::To::PDF::Lite
 (is an "atom" a chunk of formatted text? can I do that myself?)
 
