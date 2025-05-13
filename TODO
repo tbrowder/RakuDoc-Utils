@@ -1,3 +1,6 @@
+Fix @attr handling in class Atom.
+ - don't attach formatting codes for bare words
+
 Success! I recreated a chunk of formatted text with Pod::TreeWalker.
 
 Next step is to convert it to Atom form.

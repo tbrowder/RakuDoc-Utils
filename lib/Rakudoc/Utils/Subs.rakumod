@@ -32,30 +32,38 @@ In order to get there,
 class Atom {
     has @.attrs is required is rw = []; # the attributes
     has $.text  is required is rw = "";
+    has $.style is rw = "";
 
-    has $.B is rw = 0;
-    has $.I is rw = 0;
+    =begin comment
+    has $.B is rw = 0; # bold
+    has $.I is rw = 0; # italic (oblique)
     has $.U is rw = 0; # underline
     has $.O is rw = 0; # strikethrough
     has $.M is rw = 0; # overline
-    has $.C is rw = 0;
+    has $.C is rw = 0; # code
+    has $.L is rw = 0; # link
+    =end comment
 
     # defaults (use core fonts for now)
     has $.font is rw = "";
     has $.size is rw = 14;
 
     submethod TWEAK {
-        # go through the attributes and set the attr values
-        for @!attrs {
-            when /B/ { $!B = 1 }
-            when /I/ { $!I = 1 }
-            when /U/ { $!U = 1 }
-            when /O/ { $!O = 1 }
-            when /M/ { $!M = 1 }
-            when /C/ { $!C = 1 }
-        }
+        $!style = @!attrs.join;
     }
 
+    method print {
+        my $txt   = "";
+        my $front = "";
+        my $back  = "";
+        for @!attrs.reverse -> $a {
+            $front ~= "{$a}<";
+        }
+        for @!attrs.reverse -> $a {
+            $back ~= ">";
+        }
+        $txt = $front ~ $!text ~ $back;;
+    }
 } 
 
 sub clean-text(
@@ -135,19 +143,28 @@ sub text2chunks(
     my @chars = $text-in.lines.words.comb;
 
     # trial balloon...
-    my @t; # a stack to keep track of X<> in/out
+    # problem: bare words need to be protected somehow 
+    #   see the test file where the first few words are
+    #   outside the attributes 
+    # will try using space separation to protect such
+    #   chunks
+
+    my @t; # a push/pop stack to keep track of X<> in/out
     my @a; # Atoms
     my $nc = @chars.elems;
-    while @chars {
-        #my $c = @chars.pop;
+    while @chars { 
         my $c = @chars.shift; # start with the oldest
+        my $space = 0;
+        if $c ~~ /\h/ {
+            ; # ok, now what?
+            $space = 1;
+        }
         my $next = @chars.elems ?? @chars.head !! "";
         if $next eq '<' {
             if $c ~~ / (B|I|U|O|M|C|L) / {
                 my $k = ~$0 if $0.defined;
                 ; # ok, then so what?
                 @t.push: $k; 
-                #@chars.pop; # get rid of the '<'
                 @chars.shift; # get rid of the '<'
             }
             else {
@@ -157,7 +174,7 @@ sub text2chunks(
         elsif $c eq '>' {
             # end of type
             # check the stack
-            @t.pop if @t;
+            @t.pop if @t.elems;
         }
         else {
             # the @t stack contains any attributes
@@ -165,10 +182,23 @@ sub text2chunks(
             @a.push: $a;
         }
     }
+
+    # try to merge similar Atoms
+    my @a2;
+    my $a;
+    my $na = @a.elems;
+    for @a.kv -> $i,$a {
+        my $next = $i <= $na-2 ?? @a[$i+1] !! "";
+        if $next {
+            ; # ?
+        }
+
+    }
+
     # create a string out of the Atoms
     my $txt;
     for @a -> $a {
-        $txt ~= $a.text ~ "";
+        $txt ~= $a.print;
     }
     $txt;
 }
@@ -211,6 +241,7 @@ sub parse-text(
                 when @c[$i-1] eq 'O' { --$in-o; }
                 when @c[$i-1] eq 'M' { --$in-m; }
                 when @c[$i-1] eq 'C' { --$in-c; }
+                when @c[$i-1] eq 'L' { --$in-l; }
             }
         }
     }
