@@ -13,19 +13,24 @@ to atoms with integrated text embellishments for each subchunk.
 For example, given this text (note "illegal" spaces after
 some formatting codes):
 
-   My U<old B< dog> has I< fleas>>.
+   Now is the B<time> to see,
+     my U<old B< dog> has I< fleas>>, hasn't he?
 
 Step 1. Clean it up to remove illegal spaces yielding:
 
-   My U<old B<dog> has I<fleas>>.
+   Now is the B<time> to see, my U<old B<dog> has I<fleas>>, hasn't he?
 
-Step 2. Parse the chunks into Atoms for further word processing.
+Step 2. Parse the chunks into Atoms for further word processing:
 
-In order to get there, 
+   An Atom is a chunk of text (NOT including newlines or spaces)
+   with the same style, font, and font size. Atoms are separated
+   by pipes as shown:
 
-   Scan the whole string, noting in/out for each char, assigning
-   each to a new Atom. Either in the process, or in another pass,
-   merge Atoms with identical attributes except the chars.
+   |Now|is|the|B<time>|to|see,|my|U<old>|U<B<dog>|U<has>|U<I<fleas>>|,|hasn't|he?|
+
+   Note a collection of Atoms can be treated as various document elements,
+   but such things a punctuation and Atom spacing will have to be handled
+   accordingly.
 
 =end comment
 
@@ -35,13 +40,13 @@ class Atom {
     has $.style is rw = "";
 
     =begin comment
-    has $.B is rw = 0; # bold
-    has $.I is rw = 0; # italic (oblique)
-    has $.U is rw = 0; # underline
-    has $.O is rw = 0; # strikethrough
-    has $.M is rw = 0; # overline
-    has $.C is rw = 0; # code
-    has $.L is rw = 0; # link
+    B # bold
+    I # italic (oblique)
+    U # underline
+    O # strikethrough
+    M # overline
+    C # code
+    L # link
     =end comment
 
     # defaults (use core fonts for now)
@@ -62,7 +67,7 @@ class Atom {
         for @!attrs.reverse -> $a {
             $back ~= ">";
         }
-        $txt = $front ~ $!text ~ $back;;
+        $txt = $front ~ $!text ~ $back;
     }
 } 
 
@@ -87,9 +92,21 @@ sub clean-text(
         if $e<start>:exists {
             if $e<code-type>:exists {
                 my $code = $e<code-type>.trim;
-                $text ~= " " if $text;
-                $text ~= $code;
-                $text ~= '<';
+                # if the last two chars in $text were a code-type and a '<',
+                # add no space
+                my @c = $text.comb;
+                my $last = @c.elems ?? @c.pop !! "";
+                if $last eq '<' {
+                    $text ~= $code;
+                    $text ~= '<';
+                }
+                elsif $last ne "" {
+                    $text ~= " ";
+                }
+                else {
+                    $text ~= $code;
+                    $text ~= '<';
+                }
             }
             if $debug { say "start: ", $e.gist; }
         }
@@ -118,7 +135,7 @@ sub clean-text(
                 $text ~= $txt;
             }
             else {
-                die "FATAL: Unexpected situation";
+                die "FATAL: Unexpected situation. Please file an issue";
             }
             if $debug { say "text: ", $txt; }
         }
@@ -126,6 +143,18 @@ sub clean-text(
             if $debug { say "inside: ", $e.gist; }
         }
     }
+
+    # at this point the text should satisfy the following:
+    #   + no space between a style char and its following '<'
+    #     (called a "style pair")
+    #   + no bare char before a style pair
+    #   + one or more chars before a style closer
+    #   + one or more chars after a style pair
+    # for $text.words -> $w {
+    #     my @c  = $w.comb;
+    #     my $ne = @c.elems;
+    # }
+    
     $text;
 }
 
@@ -134,65 +163,63 @@ sub text2chunks(
     :$debug,
     --> Str
     ) is export {
-    # Use code from David's stuff to consolidate "chunks" into
+    # Consolodating "chunks" into
     # self-contained words (this is cheating a bit because
     # underlining, et alii, will not carry over the word spaces, BUT
     # that can be handled in the parent Para).
     #
     # This sub's output is the input to sub parse-text.
-    my @chars = $text-in.lines.words.comb;
+    my @w = $text-in.lines.words; # .comb.reverse; # use a stack: pop/push
 
     # trial balloon...
-    # problem: bare words need to be protected somehow 
-    #   see the test file where the first few words are
-    #   outside the attributes 
-    # will try using space separation to protect such
-    #   chunks
+    my @t;     # a push/pop stack to keep track of styles X<> in/out
+    my @chunk; # a push/pop stack for building with multiple styles
+    my @a;     # the final Atom list
+   
+    for @w -> $w { 
+        my $is-styled = 0;
+        # A word is either styled or not. it is NOT styled if there
+        # is no style in the stack and none at the beginning of the word.
+       
+        my @c = $w.comb;
+        my $this = @c.shift; # start with the oldest (leftmost)
+        my $next = @c.head // "";
 
-    my @t; # a push/pop stack to keep track of X<> in/out
-    my @a; # Atoms
-    my $nc = @chars.elems;
-    while @chars { 
-        my $c = @chars.shift; # start with the oldest
-        my $space = 0;
-        if $c ~~ /\h/ {
-            ; # ok, now what?
-            $space = 1;
-        }
-        my $next = @chars.elems ?? @chars.head !! "";
+        # is this a styled word? it can have more than one style!
         if $next eq '<' {
-            if $c ~~ / (B|I|U|O|M|C|L) / {
+            if $this ~~ / (B|I|U|O|M|C|L) / {
                 my $k = ~$0 if $0.defined;
-                ; # ok, then so what?
+                ; # ok, so what?
                 @t.push: $k; 
-                @chars.shift; # get rid of the '<'
+                @c.shift; # get rid of the '<'
+                $is-styled = 1;
+                next;
             }
             else {
-                die "FATAL: Unexpected char '$c'";
+                die "FATAL: Unexpected char '$this'";
             }
         }
-        elsif $c eq '>' {
-            # end of type
+
+        # check the end for one or more '>'
+        my @enders = @c.reverse;
+
+        
+
+        if $this eq '>' {
+            # end of style type
             # check the stack
             @t.pop if @t.elems;
         }
+
+        if @t.elems {
+            # the @t stack contains any attributes
+            
+        }
         else {
             # the @t stack contains any attributes
-            my $a = Atom.new: :text($c), :attrs(@t);
+            my $a = Atom.new: :text($this), :attrs(@t);
             @a.push: $a;
         }
-    }
-
-    # try to merge similar Atoms
-    my @a2;
-    my $a;
-    my $na = @a.elems;
-    for @a.kv -> $i,$a {
-        my $next = $i <= $na-2 ?? @a[$i+1] !! "";
-        if $next {
-            ; # ?
-        }
-
     }
 
     # create a string out of the Atoms
@@ -246,6 +273,3 @@ sub parse-text(
         }
     }
 }
-
-
-
