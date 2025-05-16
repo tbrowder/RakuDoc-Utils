@@ -22,7 +22,7 @@ It is intended primarily to be used in PDF document production, but it could als
 
 Note its initial release has only a limited capability in order to support my upcoming distribution **Slidemaker**. To do that, it must handle the following Rakudoc elements:
 
-    Formatting codes: L, B, I, U, O, M
+    Formatting codes: C, L, B, I, U, O, M
     Bare strings/paragraphs
 
     =Title

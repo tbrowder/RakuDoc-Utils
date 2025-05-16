@@ -14,7 +14,7 @@ For example, given this text (note "illegal" spaces after
 some formatting codes):
 
    Now is the B<time> to see,
-     my U<old B< dog> has I< fleas>>, hasn't he?
+     my U<old B< dog> has I< fleas> >, hasn't he?
 
 Step 1. Clean it up to remove illegal spaces yielding:
 
@@ -29,7 +29,7 @@ Step 2. Parse the chunks into Atoms for further word processing:
    |Now|is|the|B<time>|to|see,|my|U<old>|U<B<dog>|U<has>|U<I<fleas>>|,|hasn't|he?|
 
    Note a collection of Atoms can be treated as various document elements,
-   but such things a punctuation and Atom spacing will have to be handled
+   but such things as punctuation and Atom spacing will have to be handled
    accordingly.
 
 =end comment
@@ -71,13 +71,21 @@ class Atom {
     }
 } 
 
-sub clean-text(
-    $text-in,
+class Style {
+    has $.style is required = ""; # one of BIUOMLC
+    # a style may be followed immediately by another style without any
+    # intervening text so .char will be empty
+    has $.char is rw = ""; 
+}
+
+sub extract-formatted-text( # was:  clean-text(
+    Str $text-in,
     :$debug,
     --> Str
     ) is export {
+
     # This sub's output is the input to sub text2chunks
-    # See file t/2*t for the test
+    # See files t/2*t and t/2*t for the tests
 
     my ($f, $L, $pod-tree, $o, @events);
     $f = "t/data/one-liner.rakudoc";
@@ -87,11 +95,38 @@ sub clean-text(
     $o.walk-pod: $pod-tree.head;
     @events = $L.events;
 
+    # This sub should extract the formatted text in the
+    # incoming text and reformat it into text words that
+    # are either individually formatted with one or more 
+    # bounding styles or they are completely unformatted text.
+    # The incoming text may have format codes that encompass
+    # more than one word, but the output words are completely
+    # independent of any other words.
+
+    # For example, input may be ' B < I < one > U < two > > ' but the output
+    # will be 'B<I<one>> B<U<two>>'.
+
+    my Style @styles = [];
+    my @chunks = [];
+    my $chunk  = "";
+
+    # watch for the following situations that take careful handling:
+    #  + extra trailing '>'
+    #  + extra leading '<' (note Rakudoc allows << instead of one <)
+
     my $text = "";
     for @events -> $e {
         if $e<start>:exists {
             if $e<code-type>:exists {
+                #===================================
+                # start of a chunk of formatted text
+                #===================================
                 my $code = $e<code-type>.trim;
+                my $style = Style.new: :style($code);
+
+                # possibilies:
+                #   + if no @styles
+
                 # if the last two chars in $text were a code-type and a '<',
                 # add no space
                 my @c = $text.comb;
@@ -112,14 +147,31 @@ sub clean-text(
         }
         elsif $e<end>:exists {
             if $e<code-type>:exists {
+                #===================================
+                # end of a chunk of formatted text
+                #===================================
                 my $code = $e<code-type>.trim;
+
+                # test certainties
+                unless @styles.elems {
+                    say "ERROR: unexpected empty \@styles";
+                }
+                unless $chunk.chars {
+                    say "ERROR: unexpected empty \$chunk";
+                }
+
                 $text .= trim-trailing;
-                $text ~= '> ';
+                $text ~= '>';
+#               my $style = @styles.pop;
             }
             if $debug { say "end: ", $e.gist; }
         }
         elsif $e<text>:exists {
+            # if it's formatted text, there should be at least one
+            # @styles element
             my $txt = $e<text>.trim;
+
+            =begin comment
             my $lchar = $text.comb.tail;
             if not $text {
                 $text ~= $txt;
@@ -137,10 +189,13 @@ sub clean-text(
             else {
                 die "FATAL: Unexpected situation. Please file an issue";
             }
+            =end comment
+
             if $debug { say "text: ", $txt; }
         }
         else {
-            if $debug { say "inside: ", $e.gist; }
+            # what else could it be?
+            if 1 or $debug { say "DEBUG: inside: '{$e.gist}'"; }
         }
     }
 
@@ -151,8 +206,7 @@ sub clean-text(
     #   + one or more chars before a style closer
     #   + one or more chars after a style pair
     # for $text.words -> $w {
-    #     my @c  = $w.comb;
-    #     my $ne = @c.elems;
+    #     my @c  = $w.comb; #     my $ne = @c.elems;
     # }
     
     $text;
