@@ -3,15 +3,15 @@ use Test;
 use Pod::Load;
 use Pod::TreeWalker;
 
-use Rakudoc::Utils;
-use Rakudoc::Utils::Classes;
-use Rakudoc::Utils::Listener;
-use Rakudoc::Utils::Subs;
-use Rakudoc::Utils::Vars;
+use RakuDoc::Utils;
+use RakuDoc::Utils::Classes;
+use RakuDoc::Utils::Listener;
+use RakuDoc::Utils::Subs;
+use RakuDoc::Utils::Vars;
 
 my ($f, $L, $pod-tree, $o, @events);
 
-$L = Rakudoc::Utils::Listener.new;
+$L = RakuDoc::Utils::Listener.new;
 $f = "t/data/slide-chunks.rakudoc";
 $pod-tree = load-pod $f.IO.slurp;
 $o = Pod::TreeWalker.new: :listener($L);

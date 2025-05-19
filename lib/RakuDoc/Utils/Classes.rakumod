@@ -1,4 +1,4 @@
-unit module Rakudoc::Utils::Classes;
+unit module RakuDoc::Utils::Classes;
 
 class Pg is export {
     has @.lines is rw;

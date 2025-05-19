@@ -1,11 +1,11 @@
 use Test;
 
 my @modules = <
-    Rakudoc::Utils
-    Rakudoc::Utils::Classes
-    Rakudoc::Utils::Listener
-    Rakudoc::Utils::Subs
-    Rakudoc::Utils::Vars
+    RakuDoc::Utils
+    RakuDoc::Utils::Classes
+    RakuDoc::Utils::Listener
+    RakuDoc::Utils::Subs
+    RakuDoc::Utils::Vars
 >;
 
 plan @modules.elems;

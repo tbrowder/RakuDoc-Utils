@@ -1,7 +1,7 @@
-unit module Rakudoc::Utils::Subs;
+unit module RakuDoc::Utils::Subs;
 
 use Pod::TreeWalker;
-use Rakudoc::Utils::Listener;
+use RakuDoc::Utils::Listener;
 use Pod::Load;
 use FontFactory::Type1;
 

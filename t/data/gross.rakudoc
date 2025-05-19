@@ -1,0 +1,7 @@
+# unmatched angle brackets
+=begin pod
+
+B < I < one two > U < three > > >
+
+=end pod
+

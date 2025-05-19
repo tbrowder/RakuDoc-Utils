@@ -1,9 +1,9 @@
 use Test;
 
 use Pod::Load;
-use Rakudoc::Utils;
-use Rakudoc::Utils::Subs;
-use Rakudoc::Utils::Listener;
+use RakuDoc::Utils;
+use RakuDoc::Utils::Subs;
+use RakuDoc::Utils::Listener;
 
 # original text in the test file:
 #   my $text-in  = "My U<old B< dog> has I< fleas>>.";
@@ -15,7 +15,7 @@ use Rakudoc::Utils::Listener;
 my ($f, $L, $pod-tree, $o, @events);
 
 $f = "t/data/one-liner.rakudoc";
-$L = Rakudoc::Utils::Listener.new;
+$L = RakuDoc::Utils::Listener.new;
 # note 'load-pod' adds another layer of surrounding pod so
 # you can use bare pod strings
 $pod-tree = load-pod $f.IO.slurp;

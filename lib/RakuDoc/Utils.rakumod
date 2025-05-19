@@ -1,9 +1,9 @@
-unit class Rakudoc::Utils;
+unit class RakuDoc::Utils;
 
 use Pod::TreeWalker;
 use Pod::Load;
 
-use Rakudoc::Utils::Classes;
+use RakuDoc::Utils::Classes;
 
 sub read-pod(
     $rfil, #= a file with rakudoc
