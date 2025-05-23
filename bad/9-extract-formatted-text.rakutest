@@ -1,0 +1,87 @@
+use Test;
+
+use Pod::TreeWalker;
+use Pod::TreeWalker::Listener;
+use RakuDoc::Load;
+use RakuDoc::Utils;
+use RakuDoc::Utils::Listener;
+
+my ($tin, $tout);
+my @tin = [
+    "My U<old B< dog> has I< fleas>>.";
+];
+my @tout = [
+    "My U<old> U<B<dog>> U<has> U<I<fleas>>.";
+];
+
+for @tin.kv -> $i, $tin {
+    $tout = extract-formatted-text $tin;
+    is $tout, @tout[$i]
+}
+
+done-testing;
+
+=finish
+
+$f = "t/data/one-liner.rakudoc";
+$L = RakuDoc::Utils::Listener.new;
+# note 'load-pod' adds another layer of surrounding pod so
+# you can use bare pod strings
+$pod-tree = load-pod $f.IO.slurp;
+$o = Pod::TreeWalker.new: :listener($L);
+$o.walk-pod: $pod-tree.head;
+@events = $L.events;
+cmp-ok @events.elems, '>', 0, "formatted-text";
+isa-ok @events.head, Hash;
+
+my $text = "";
+if 0 {
+    for @events -> $e {
+        if $e<start>:exists {
+            if $e<code-type>:exists {
+                my $code = $e<code-type>.trim;
+                $text ~= " " if $text;
+                $text ~= $code;
+                $text ~= '<';
+            }
+            say "start: ", $e.gist;
+        }
+        elsif $e<end>:exists {
+            if $e<code-type>:exists {
+                my $code = $e<code-type>.trim;
+                $text .= trim-trailing;
+                $text ~= '> ';
+            }
+            say "end: ", $e.gist;
+        }
+        elsif $e<text>:exists {
+            my $txt = $e<text>.trim;
+            my $lchar = $text.comb.tail;
+            if not $text {
+                $text ~= $txt;
+            }
+            elsif $lchar eq '<' {
+                $text ~= $txt ; # '>';
+            }
+            elsif $txt ~~ / '.'|'!'|'?' / {
+                $text .= trim-trailing;	
+                $text ~= $txt;
+            }
+            elsif $lchar eq ' ' {
+                $text ~= $txt;
+            }
+            else {
+                die "FATAL: Unexpected situation";
+            }
+            say "text: ", $txt;
+        }
+        else {
+            say "inside: ", $e.gist;
+        }
+    }
+}
+say "text: '$text'";
+
+is 1, 1;
+
+done-testing;

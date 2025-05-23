@@ -6,7 +6,7 @@
   "build-depends": [
   ],
   "depends": [
-    "Pod::Load",
+    "RakuDoc::Load",
     "FontFactory::Type1",
     "Pod::TreeWalker"
   ],
@@ -18,7 +18,6 @@
     "RakuDoc::Utils": "lib/RakuDoc/Utils.rakumod",
     "RakuDoc::Utils::Classes": "lib/RakuDoc/Utils/Classes.rakumod",
     "RakuDoc::Utils::Listener": "lib/RakuDoc/Utils/Listener.rakumod",
-    "RakuDoc::Utils::Subs": "lib/RakuDoc/Utils/Subs.rakumod",
     "RakuDoc::Utils::Vars": "lib/RakuDoc/Utils/Vars.rakumod"
   },
   "resources": [

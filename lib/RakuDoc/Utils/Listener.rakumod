@@ -1,14 +1,15 @@
 use Pod::TreeWalker::Listener;
 
+unit class RakuDoc::Utils::Listener does Pod::TreeWalker::Listener;
+
 =begin comment
 
 This code was originally copied from Pod::TreeWalker/t/lib/TestListener.rakumod
 and modified for RakuDoc::Utils use in extracting data from a $=pod object (obtained
-from distro 'Pod::Load'.
+from distro 'RakuDoc::Load'.
 
 =end comment
 
-unit class RakuDoc::Utils::Listener does Pod::TreeWalker::Listener;
  
 has @.events;
 

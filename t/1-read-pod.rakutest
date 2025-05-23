@@ -6,7 +6,6 @@ use Pod::TreeWalker;
 use RakuDoc::Utils;
 use RakuDoc::Utils::Classes;
 use RakuDoc::Utils::Listener;
-use RakuDoc::Utils::Subs;
 use RakuDoc::Utils::Vars;
 
 my ($f, $L, $pod-tree, $o, @events);

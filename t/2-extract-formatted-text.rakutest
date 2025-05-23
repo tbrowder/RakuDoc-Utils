@@ -2,7 +2,6 @@ use Test;
 
 use Pod::Load;
 use RakuDoc::Utils;
-use RakuDoc::Utils::Subs;
 use RakuDoc::Utils::Listener;
 
 # original text in the test file:
@@ -10,7 +9,7 @@ use RakuDoc::Utils::Listener;
 
 # should be transformed into:
 #   my $text-out = "My U<old> U<B<dog>> U<has> U<I<fleas>>.";
-# by sub ?
+# by sub extract-formatted-text(
 
 my ($f, $L, $pod-tree, $o, @events);
 
