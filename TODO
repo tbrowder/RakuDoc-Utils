@@ -1,3 +1,7 @@
+Divide parsing into more stages:
+  clean first
+  separate into atoms
+
 Fix @attr handling in class Atom.
  - don't attach formatting codes for bare words
 

@@ -20,39 +20,48 @@ DESCRIPTION
 
 It is intended primarily to be used in PDF document production, but it could also be useful in other roles.
 
-Note its initial release has only a limited capability in order to support my upcoming distribution **Slidemaker**. To do that, it must handle the following RakuDoc elements:
+Note it currently has a limited capability. It can provide the following:
 
-    Formatting codes: C, L, B, I, U, O, M
-    Bare strings/paragraphs
+### Extract RakuDoc from a block of text
 
-    =Title
-    =Subtitle
-    =for para
-    =item     # not numbered, level 1 only
-    =begin/=end code/para/item/comment
-    =comment
+The text can be in a string or a file. The text can have formatting codes. The following Formatting codes are currently handled: 
 
-Classes
-=======
+  * C - code
 
-The following classes are designed to group data for the user:
+  * L - link
 
-### class Pg
+  * B - bold font
 
-    class Pg {
-        has Vbloc @.vblocs;
-    }
+  * I - italic (oblique) font
 
-### class Vbloc
+  * U - underline text
 
-    class Vbloc {
-        #| should only have one of the following
-        #| (any text chunks may be formatted or contain links)
-        has $.text; 
-        has $.list;
-        has $.title;
-        has $.subtitle;
-    }
+  * O - overline text
+
+  * M - strikethrough text
+
+Following is an example of an almost-properly formatted block of text and its parsing into a list of individual words with unneeded spaces removed:
+
+Input (with extraneous but allowable spaces):
+
+     B < I < one > > and
+        U < I < two > >
+
+Output (with extraneous spaces removed):
+
+    B<I<one>> and U<I<two>>
+
+Any `blank` lines break up the text into lines:
+
+    B<I<one>> 
+    and 
+
+    U<I<two>>
+
+becomes:
+
+    B<I<one>> and 
+    U<I<two>>
 
 AUTHOR
 ======

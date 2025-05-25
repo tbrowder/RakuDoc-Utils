@@ -38,7 +38,7 @@ sub clean($txt is copy, :$step) {
 # test atrings for phase one parsing
 my @tin = [
     " B < I < one > \nU < two > > ",  # simple
-    " B < I < one > U < two > > >", # unbalanced <>
+    " B < I < one > \nU < two > > >", # unbalanced <>
 ];
 
 # expected results
