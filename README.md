@@ -63,7 +63,12 @@ becomes:
     B<I<one>> and 
     U<I<two>>
 
-### Parse the text into a list of `Atoms`
+### Parse the text into a list of `Atom` objects
+
+Class Atom encapsulates the format details of the text atoms to pass to a using routine for further processing.
+
+    class Atom {
+    }
 
 AUTHOR
 ======
