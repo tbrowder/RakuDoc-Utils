@@ -52,3 +52,4 @@ for @tin.kv -> $i, $txt {
     is $tout, @texp[$i];
 }
 
+done-testing;
