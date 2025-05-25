@@ -36,6 +36,7 @@ Step 2. Parse the chunks into Atoms for further word processing:
 
 =end comment
 
+# or Chunk?
 class Atom {
     has @.attrs is required is rw = []; # the attributes
     has $.text  is required is rw = "";
@@ -108,6 +109,19 @@ sub extract-formatted-text( # was:  clean-text(
     # For example, input may be ' B < I < one > U < two > > ' but the output
     # will be 'B<I<one>> B<U<two>>'.
 
+    # possible steps to do that:
+    #   first, warn of unbalanced <> pairs and have user add \ before odd <>
+    #     (if that can be done, otherwise disallow unbalanced <>
+    #   ' B < I < one > U < two > > ' 
+    #   'B < I < one > U < two > >' # trimmed and newlines removed
+    #   'B < I < one > U < two >>'  # spaces between > > removed
+    #   'B< I< one > U< two >>'     # spaces between style X < removed
+    #   'B<I<one > U<two >>'        # spaces after < removed
+    #   'B<I<one> U<two>>'          # spaces before > removed
+
+
+
+
     my Style @styles = [];
     my @chunks = [];
     my $chunk  = "";
@@ -116,7 +130,7 @@ sub extract-formatted-text( # was:  clean-text(
     #  + extra trailing '>'
     #  + extra leading '<' (note Rakudoc allows Unicode char '<<'
     #      << instead of one <)
-
+    #     that pair consists of Unicode chars \x00ab and \x00bb
     my $text = "";
     for @events -> $e {
         if $e<start>:exists {
@@ -180,7 +194,7 @@ sub extract-formatted-text( # was:  clean-text(
                 $text ~= $txt;
             }
             elsif $lchar eq '<' {
-                $text ~= $txt ; # '>';
+                $text ~= $txt; # '>';
             }
             elsif $txt ~~ / '.'|'!'|'?' / {
                 $text .= trim-trailing;	
@@ -202,13 +216,18 @@ sub extract-formatted-text( # was:  clean-text(
         }
     }
 
+#   $text ~~ s:g/'>' \h+ '>'/'>>'/;
+
     # at this point the text should satisfy the following:
-    #   + no space between a style char and its following '<'
-    #     (called a "style pair")
-    #   + no bare char before a style pair 'bB<' [maybe later]
-    #   + one or more chars before a style closer
-    #   + one or more chars after a style pair
-    #   + none or more <> not as styles
+    # 1.  no space between a style char and its following '<'
+    #       (called a "style pair"): B<
+
+    # 2.  no bare char before a style pair as in: 'bB<' [maybe later]
+    # 3.  one or more chars before a style closer: x>
+    #       (not to be confused by a bare '>')
+    # 4.  one or more chars after a style pair: B<x
+    # 5.  zero or more < or > not as styles
+
     # for $text.words -> $w {
     #     my @c  = $w.comb; #     my $ne = @c.elems;
     # }
