@@ -66,6 +66,8 @@ B<I<one>> and
 U<I<two>> 
 =end code
 
+=head3 Parse the text into a list of C<Atoms>
+
 =head1 AUTHOR
 
 Tom Browder <tbrowder@acm.org>
