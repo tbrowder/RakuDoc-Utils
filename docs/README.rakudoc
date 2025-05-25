@@ -66,7 +66,16 @@ B<I<one>> and
 U<I<two>> 
 =end code
 
-=head3 Parse the text into a list of C<Atoms>
+=head3 Parse the text into a list of C<Atom> objects
+
+Class Atom encapsulates the format details of the text atoms
+to pass to a using routine for further processing.
+
+=begin code
+class Atom {
+}
+=end code
+
 
 =head1 AUTHOR
 
