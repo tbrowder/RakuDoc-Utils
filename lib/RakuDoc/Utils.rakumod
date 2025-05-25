@@ -36,21 +36,10 @@ Step 2. Parse the chunks into Atoms for further word processing:
 
 =end comment
 
-# or Chunk?
 class Atom {
     has @.attrs is required is rw = []; # the attributes
     has $.text  is required is rw = "";
     has $.style is rw = "";
-
-    =begin comment
-    B # bold
-    I # italic (oblique)
-    U # underline
-    O # strikethrough
-    M # overline
-    C # code
-    L # link
-    =end comment
 
     # defaults (use core fonts for now)
     has $.font is rw = "";

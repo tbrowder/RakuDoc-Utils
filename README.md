@@ -68,6 +68,30 @@ becomes:
 Class Atom encapsulates the format details of the text atoms to pass to a using routine for further processing.
 
     class Atom {
+        has @.attrs is required is rw = []; # the attributes
+        has $.text  is required is rw = "";
+        has $.style is rw = "";
+
+        # defaults (use core fonts for now)
+        has $.font is rw = "";
+        has $.size is rw = 14;
+
+        submethod TWEAK {
+            $!style = @!attrs.join;
+        }
+
+        method print {
+            my $txt   = "";
+            my $front = "";
+            my $back  = "";
+            for @!attrs.reverse -> $a {
+                $front ~= "{$a}<";
+            }
+            for @!attrs.reverse -> $a {
+                $back ~= ">";
+            }
+            $txt = $front ~ $!text ~ $back;
+        }
     }
 
 AUTHOR
