@@ -63,6 +63,8 @@ becomes:
     B<I<one>> and 
     U<I<two>>
 
+### Parse the text into a list of `Atoms`
+
 AUTHOR
 ======
 
