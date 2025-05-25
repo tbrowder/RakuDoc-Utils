@@ -3,24 +3,24 @@
 NAME
 ====
 
-**Rakudoc::Utils** - Provides routines to extract Rakudoc and convert to classes for further word processing.
+**RakuDoc::Utils** - Provides routines to extract RakuDoc and convert to classes for further word processing.
 
 SYNOPSIS
 ========
 
 ```raku
-use Rakudoc::Utils;
+use RakuDoc::Utils;
 #...user code
 ```
 
 DESCRIPTION
 ===========
 
-**Rakudoc::Utils** is designed to simplify extracting Rakudoc from a file and converting it to a user-friendly tree structure for further processing.
+**RakuDoc::Utils** is designed to simplify extracting RakuDoc from a file and converting it to a user-friendly tree structure for further processing.
 
 It is intended primarily to be used in PDF document production, but it could also be useful in other roles.
 
-Note its initial release has only a limited capability in order to support my upcoming distribution **Slidemaker**. To do that, it must handle the following Rakudoc elements:
+Note its initial release has only a limited capability in order to support my upcoming distribution **Slidemaker**. To do that, it must handle the following RakuDoc elements:
 
     Formatting codes: C, L, B, I, U, O, M
     Bare strings/paragraphs

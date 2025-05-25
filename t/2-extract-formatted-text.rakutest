@@ -1,6 +1,6 @@
 use Test;
 
-use Pod::Load;
+use RakuDoc::Load;
 use RakuDoc::Utils;
 use RakuDoc::Utils::Listener;
 
