@@ -1,6 +1,6 @@
 use Test;
 
-use Pod::Load;
+use RakuDoc::Load;
 use Pod::TreeWalker;
 
 use RakuDoc::Utils;

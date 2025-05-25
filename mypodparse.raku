@@ -1,6 +1,6 @@
 #!/usr/bin/env raku
 
-use Pod::Load;
+use RakuDoc::Load;
 use Pod::TreeWalker;
 use Rakudoc::Utils;
 use Rakudoc::Utils::Listener;
