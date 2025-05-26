@@ -7,7 +7,6 @@
   ],
   "depends": [
     "RakuDoc::Load",
-    "FontFactory::Type1",
     "Pod::TreeWalker"
   ],
   "description": "Provides routines to extract RakuDoc and convert to user-friendly classes for further processing.",

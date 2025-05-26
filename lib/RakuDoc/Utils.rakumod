@@ -6,6 +6,7 @@ use RakuDoc::Load;
 use FontFactory::Type1;
 
 use RakuDoc::Utils::Listener;
+use RakuDoc::Utils::Classes;
 
 =begin comment
 
@@ -25,7 +26,7 @@ Step 1. Clean it up to remove illegal spaces yielding:
 Step 2. Parse the chunks into Atoms for further word processing:
 
    An Atom is a chunk of text (NOT including newlines or spaces)
-   with the same style, font, and font size. Atoms in this example are 
+   with the same style, font, and font size. Atoms in this example are
    separated by pipes to show no spaces are left:
 
    |Now|is|the|B<time>|to|see,|my|U<old>|U<B<dog>|U<has>|U<I<fleas>>|,|hasn't|he?|
@@ -35,40 +36,6 @@ Step 2. Parse the chunks into Atoms for further word processing:
    accordingly.
 
 =end comment
-
-class Atom {
-    has @.attrs is required is rw = []; # the attributes
-    has $.text  is required is rw = "";
-    has $.style is rw = "";
-
-    # defaults (use core fonts for now)
-    has $.font is rw = "";
-    has $.size is rw = 14;
-
-    submethod TWEAK {
-        $!style = @!attrs.join;
-    }
-
-    method print {
-        my $txt   = "";
-        my $front = "";
-        my $back  = "";
-        for @!attrs.reverse -> $a {
-            $front ~= "{$a}<";
-        }
-        for @!attrs.reverse -> $a {
-            $back ~= ">";
-        }
-        $txt = $front ~ $!text ~ $back;
-    }
-} 
-
-class Style {
-    has $.style is required = ""; # one of BIUOMLC
-    # a style may be followed immediately by another style without any
-    # intervening text so .char will be empty
-    has $.char is rw = ""; 
-}
 
 sub extract-formatted-text( # was:  clean-text(
     Str $text-in,
@@ -89,7 +56,7 @@ sub extract-formatted-text( # was:  clean-text(
 
     # This sub should extract the formatted text in the
     # incoming text and reformat it into text words that
-    # are either individually formatted with one or more 
+    # are either individually formatted with one or more
     # bounding styles or they are completely unformatted text.
     # The incoming text may have format codes that encompass
     # more than one word, but the output words are completely
@@ -101,15 +68,12 @@ sub extract-formatted-text( # was:  clean-text(
     # possible steps to do that:
     #   first, warn of unbalanced <> pairs and have user add \ before odd <>
     #     (if that can be done, otherwise disallow unbalanced <>
-    #   ' B < I < one > U < two > > ' 
+    #   ' B < I < one > U < two > > '
     #   'B < I < one > U < two > >' # trimmed and newlines removed
     #   'B < I < one > U < two >>'  # spaces between > > removed
     #   'B< I< one > U< two >>'     # spaces between style X < removed
     #   'B<I<one > U<two >>'        # spaces after < removed
     #   'B<I<one> U<two>>'          # spaces before > removed
-
-
-
 
     my Style @styles = [];
     my @chunks = [];
@@ -186,7 +150,7 @@ sub extract-formatted-text( # was:  clean-text(
                 $text ~= $txt; # '>';
             }
             elsif $txt ~~ / '.'|'!'|'?' / {
-                $text .= trim-trailing;	
+                $text .= trim-trailing;
                 $text ~= $txt;
             }
             elsif $lchar eq ' ' {
@@ -220,7 +184,7 @@ sub extract-formatted-text( # was:  clean-text(
     # for $text.words -> $w {
     #     my @c  = $w.comb; #     my $ne = @c.elems;
     # }
-    
+
     $text;
 }
 
@@ -241,12 +205,12 @@ sub text2chunks(
     my @t;     # a push/pop stack to keep track of styles X<> in/out
     my @chunk; # a push/pop stack for building with multiple styles
     my @a;     # the final Atom list
-   
-    for @w -> $w { 
+
+    for @w -> $w {
         my $is-styled = 0;
         # A word is either styled or not. it is NOT styled if there
         # is no style in the stack and none at the beginning of the word.
-       
+
         my @c = $w.comb;
         my $this = @c.shift; # start with the oldest (leftmost)
         my $next = @c.head // "";
@@ -256,7 +220,7 @@ sub text2chunks(
             if $this ~~ / (B|I|U|O|M|C|L) / {
                 my $k = ~$0 if $0.defined;
                 ; # ok, so what?
-                @t.push: $k; 
+                @t.push: $k;
                 @c.shift; # get rid of the '<'
                 $is-styled = 1;
                 next;
@@ -269,7 +233,7 @@ sub text2chunks(
         # check the end for one or more '>'
         my @enders = @c.reverse;
 
-        
+
 
         if $this eq '>' {
             # end of style type
@@ -279,7 +243,7 @@ sub text2chunks(
 
         if @t.elems {
             # the @t stack contains any attributes
-            
+
         }
         else {
             # the @t stack contains any attributes
@@ -318,7 +282,7 @@ sub parse-text(
     for @w -> $w {
         my @c = $w.comb;
         for @c.kv -> $i, $c {
-            when $c eq '<' { 
+            when $c eq '<' {
                 when @c[$i-1] eq 'B' { ++$in-b; }
                 when @c[$i-1] eq 'I' { ++$in-i; }
                 when @c[$i-1] eq 'U' { ++$in-u; }
@@ -327,7 +291,7 @@ sub parse-text(
                 when @c[$i-1] eq 'C' { ++$in-c; }
                 when @c[$i-1] eq 'L' { ++$in-l; }
             }
-            when $c eq '>' { 
+            when $c eq '>' {
                 when @c[$i-1] eq 'B' { --$in-b; }
                 when @c[$i-1] eq 'I' { --$in-i; }
                 when @c[$i-1] eq 'U' { --$in-u; }

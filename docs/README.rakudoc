@@ -18,21 +18,40 @@ and converting it to a user-friendly tree structure for further processing.
 
 It is intended primarily to be used in PDF document production, but it
 could also be useful in other roles.
+Note it currently has limited capability, and the author has implemented
+features in the order most useful to his other projects.
 
-Note it currently has a limited capability. It can provide the following:
+=head3 Terminology
+
+For typesetting, we need to sometimes handle pieces of text that do not
+fit our perception of a "word." For example, we sometmes have to
+hyphenate a word in order to split it if a line of text is too long. In
+that event, we need a way to handle that programmatically. We shall
+call such pieces "atoms." An atom may or may not contain spaces, but this
+module will not normally include spaces in its atoms.
+
+This module provides the following capabilities:
 
 =head3 Extract RakuDoc from a block of text
 
-The text can be in a string or a file. The text can have formatting codes.
+The text can be in a string or a file. The text can have formatting codes,
+which may be nested to apply multple styling on an atom of text.
+Note the text could come from any of the other RakuDoc node types which
+can be selectively extracted with the aid of module C<Pod::TreeWalker>.
+
 The following Formatting codes are currently handled: 
 
-=item C - code
-=item L - link
-=item B - bold font
-=item I - italic (oblique) font
-=item U - underline text
-=item O - overline text
-=item M - strikethrough text
+=item2 B - bold font
+=item2 I - italic (oblique) font
+=item2 U - underline text
+=item2 O - overline text
+=item2 M - strikethrough text
+=item2 C - code (uses a monospaced font)
+=item2 L - link (may have two parts separated with '|')
+=item2 N - note (may be styled)
+=item2 E - Unicode character (may be styled))
+=item2 V - verbatim text
+=item2 X - index entry (may have two parts separated with '|')
 
 Following is an example of an almost-properly formatted block of text and its
 parsing into a list of individual words with unneeded spaces removed:
@@ -72,14 +91,10 @@ Class Atom encapsulates the format details of the text atoms
 to pass to a using routine for further processing.
 
 =begin code
-class Atom {
+ Atom {
     has @.attrs is required is rw = []; # the attributes
     has $.text  is required is rw = "";
     has $.style is rw = "";
-
-    # defaults (use core fonts for now)
-    has $.font is rw = "";
-    has $.size is rw = 14;
 
     submethod TWEAK {
         $!style = @!attrs.join;
@@ -99,6 +114,13 @@ class Atom {
     }
 } 
 =end code
+
+=head2 Planned features
+
+=item Break a RakuDoc document into "slices" for individual, serial
+node handling. Slices may have child slices to account for nested
+nodes such as mutilevel lists, paragraphs, and references.
+=item Provide higher level RakuDoc node extraction
 
 
 =head1 AUTHOR
