@@ -3,7 +3,6 @@ unit module RakuDoc::Utils;
 use Pod::TreeWalker;
 use Pod::TreeWalker::Listener;
 use RakuDoc::Load;
-use FontFactory::Type1;
 
 use RakuDoc::Utils::Listener;
 use RakuDoc::Utils::Classes;

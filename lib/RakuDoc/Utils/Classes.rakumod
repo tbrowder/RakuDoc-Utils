@@ -13,23 +13,11 @@ class Atom is export {
     has $.text  is required is rw = "";
     has $.style is rw = "";
 
-    # for typesetting
-    has $.font is rw = "";
-    has $.size is rw = 14;
-
     submethod TWEAK {
         $!style = @!attrs.join;
         # the font depends on the style attributes
         
         
-    }
-
-    method set-size($f) {
-        self.font = $f;
-    }
-
-    method set-size($s) {
-        self.size = $f;
     }
 
     method print {

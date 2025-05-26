@@ -100,7 +100,7 @@ to pass to a using routine for further processing.
         $!style = @!attrs.join;
     }
 
-    method print {
+    method debug-print {
         my $txt   = "";
         my $front = "";
         my $back  = "";
@@ -122,6 +122,10 @@ node handling. Slices may have child slices to account for nested
 nodes such as mutilevel lists, paragraphs, and references.
 =item Provide higher level RakuDoc node extraction
 
+=head2 See also
+
+=item PDF::Lite
+=item PDF::Document
 
 =head1 AUTHOR
 

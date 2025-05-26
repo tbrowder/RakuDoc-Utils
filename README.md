@@ -90,7 +90,7 @@ Class Atom encapsulates the format details of the text atoms to pass to a using 
             $!style = @!attrs.join;
         }
 
-        method print {
+        method debug-print {
             my $txt   = "";
             my $front = "";
             my $back  = "";
@@ -110,6 +110,13 @@ Planned features
   * Break a RakuDoc document into "slices" for individual, serial node handling. Slices may have child slices to account for nested nodes such as mutilevel lists, paragraphs, and references.
 
   * Provide higher level RakuDoc node extraction
+
+See also
+--------
+
+  * PDF::Lite
+
+  * PDF::Document
 
 AUTHOR
 ======
