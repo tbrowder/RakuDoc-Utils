@@ -22,15 +22,21 @@ $o = Pod::TreeWalker.new: :listener($L);
 $o.walk-pod: $pod-tree.head;
 @events = $L.events;
 cmp-ok @events.elems, '>', 0, "formatted-text";
-isa-ok @events.head, Hash;
+for @events {
+    isa-ok $_, Hash;
+}
 
 # now do a series of more detailed tests
 my @tin = [
-    "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+    "B<I<U<O<M< boo > > > > >",
+#   "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+#   "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+#   "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+#   "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
 ];
 my @texp = [
     # handled codes
-    "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+    "B<I<U<O<M<boo>>>>>",
     # other codes
 ];
 
@@ -47,6 +53,7 @@ my $text = "";
 # following is how the real sub was developed
 if 0 {
     for @events -> $e {
+        # an event is a hash
         if $e<start>:exists {
             if $e<code-type>:exists {
                 my $code = $e<code-type>.trim;

@@ -1,0 +1,132 @@
+event 1:
+  key: |start|
+  value: |True|
+  key: |name|
+  value: |pod|
+  key: |type|
+  value: |named|
+event 2:
+  key: |type|
+  value: |para|
+  key: |start|
+  value: |True|
+event 3:
+  key: |code-type|
+  value: |B|
+  key: |start|
+  value: |True|
+  key: |type|
+  value: |formatting-code|
+  key: |meta|
+  value: ||
+event 4:
+  key: |meta|
+  value: ||
+  key: |code-type|
+  value: |I|
+  key: |type|
+  value: |formatting-code|
+  key: |start|
+  value: |True|
+event 5:
+  key: |type|
+  value: |formatting-code|
+  key: |meta|
+  value: ||
+  key: |code-type|
+  value: |U|
+  key: |start|
+  value: |True|
+event 6:
+  key: |type|
+  value: |formatting-code|
+  key: |start|
+  value: |True|
+  key: |code-type|
+  value: |O|
+  key: |meta|
+  value: ||
+event 7:
+  key: |start|
+  value: |True|
+  key: |meta|
+  value: ||
+  key: |type|
+  value: |formatting-code|
+  key: |code-type|
+  value: |M|
+event 8:
+  key: |text|
+  value: |boo |
+event 9:
+  key: |code-type|
+  value: |M|
+  key: |meta|
+  value: ||
+  key: |type|
+  value: |formatting-code|
+  key: |end|
+  value: |True|
+event 10:
+  key: |text|
+  value: | |
+event 11:
+  key: |type|
+  value: |formatting-code|
+  key: |code-type|
+  value: |O|
+  key: |meta|
+  value: ||
+  key: |end|
+  value: |True|
+event 12:
+  key: |text|
+  value: | |
+event 13:
+  key: |type|
+  value: |formatting-code|
+  key: |code-type|
+  value: |U|
+  key: |meta|
+  value: ||
+  key: |end|
+  value: |True|
+event 14:
+  key: |text|
+  value: | |
+event 15:
+  key: |meta|
+  value: ||
+  key: |end|
+  value: |True|
+  key: |type|
+  value: |formatting-code|
+  key: |code-type|
+  value: |I|
+event 16:
+  key: |text|
+  value: | |
+event 17:
+  key: |code-type|
+  value: |B|
+  key: |meta|
+  value: ||
+  key: |end|
+  value: |True|
+  key: |type|
+  value: |formatting-code|
+event 18:
+  key: |type|
+  value: |para|
+  key: |end|
+  value: |True|
+event 19:
+  key: |end|
+  value: |True|
+  key: |name|
+  value: |pod|
+  key: |type|
+  value: |named|
+
+ok 1 - 
+1..1

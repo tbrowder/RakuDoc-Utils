@@ -1,7 +1,7 @@
 unit module RakuDoc::Utils;
 
 use Pod::TreeWalker;
-use Pod::TreeWalker::Listener;
+#use Pod::TreeWalker::Listener;
 use RakuDoc::Load;
 
 use RakuDoc::Utils::Listener;
@@ -37,24 +37,96 @@ Step 2. Parse the chunks into Atoms for further word processing:
 
 =end comment
 
-sub extract-formatted-text( # was:  clean-text(
+# Given formatted text, extract it as is.
+# the input text must use NO pod except formatting codes.
+sub raw(
     Str $text-in,
+    :$para-text = True, # ignores the begin/end of pod and para
     :$debug,
     --> Str
     ) is export {
-
-    # This sub's output is the input to sub text2chunks
-    # See files t/2*t and t/2*t for its tests
-
-    my ($f, $L, $pod-tree, $o, @events);
-    $f = "t/data/one-liner.rakudoc";
+    my ($L, $pod-tree, $o, @events, $code);
     $L = RakuDoc::Utils::Listener.new;
     $pod-tree = load-rakudoc  $text-in;
     $o = Pod::TreeWalker.new: :listener($L);
     $o.walk-pod: $pod-tree.head;
     @events = $L.events;
 
-    # This sub should extract the formatted text in the
+    my @codes = [];
+    my $text = "";
+    EVENT: for @events.kv -> $i, $event {
+        die "FATAL: a non-has event" unless $event ~~ Hash;
+        if 0 and $debug {
+            my $keys = $event.keys.join(" ");
+            say "DEBUG:keys: $keys";
+        }
+        if $debug {
+            say "event {$i+1}:";
+            for $event.kv -> $k, $v {
+                say "  key: |$k|";
+                say "  value: |$v|";
+            }
+            next EVENT;
+        }
+
+        for $event.kv -> $k, $v {
+            when $k eq "code-type" {
+                $code = $v;
+                $code .= trim;
+                @codes.push: $code;
+            }
+            when $k eq "start" {
+                ; # if $e<code-type>:exists {
+            }
+            when $k eq "end" {
+                # end of the CURRENT code type
+                @codes.pop if @codes;
+            }
+            when $k eq "text" {
+                # add it to $text
+                $text ~= $v;
+            }
+            when $k eq "formatting-code" {
+                ; # action?
+            }
+            when $k eq "meta" {
+                ; # action?
+            }
+            when $k eq "type" {
+                ; # action?
+            }
+            when $k eq "name" {
+                ; # action?
+            }
+            default {
+                # what else could it be?
+                say "WARNING: Unexpected event key: '$k'";
+                say "         value: '$v'";
+            }
+        }
+    }
+    $text;
+}
+
+sub extract-formatted-text( 
+    Str $text-in,
+    :$debug,
+    --> Str
+    ) is export {
+
+    # This sub's output is the input to sub text2chunks
+    # See files xt/0*t and xt/2*t for its tests
+
+    my ($f, $L, $pod-tree, $o, @events);
+    $f = "t/data/one-liner.rakudoc";
+    $L = RakuDoc::Utils::Listener.new;
+    $pod-tree = load-rakudoc  $text-in;
+    #$o = Pod::TreeWalker.new: :listener($L);
+    $o = RakuDoc::Utils::TreeWalker.new: :listener($L);
+    $o.walk-pod: $pod-tree.head;
+    @events = $L.events;
+
+    # Ideally, this sub should extract the formatted text in the
     # incoming text and reformat it into text words that
     # are either individually formatted with one or more
     # bounding styles or they are completely unformatted text.
@@ -75,6 +147,7 @@ sub extract-formatted-text( # was:  clean-text(
     #   'B<I<one > U<two >>'        # spaces after < removed
     #   'B<I<one> U<two>>'          # spaces before > removed
 
+    # BUT FOR NOW WE INSIST ON PROPER GROUPING
     my Style @styles = [];
     my @chunks = [];
     my $chunk  = "";

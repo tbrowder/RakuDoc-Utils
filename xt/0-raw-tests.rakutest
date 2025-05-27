@@ -1,0 +1,85 @@
+use Test;
+
+use RakuDoc::Load;
+use RakuDoc::Utils;
+use RakuDoc::Utils::Listener;
+
+my $debug = 1;
+# do a series of more detailed tests
+my @tin = [
+    "B<I<U<O<M< boo > > > > >",
+#   "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+#   "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+#   "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+#   "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+];
+my @texp = [
+    # handled codes
+    "B<I<U<O<M<boo>>>>>",
+    # other codes
+];
+
+for @tin.kv -> $i, $txt {
+    my $tout = raw $txt, :$debug;
+    say $tout;
+    #is $tout, @texp[$i];
+}
+
+is 1, 1;
+done-testing;
+
+=finish
+
+my $text = "";
+# following is how the real sub was developed
+if 0 {
+    for @events -> $e {
+        # an event is a hash
+        if $e<start>:exists {
+            if $e<code-type>:exists {
+                my $code = $e<code-type>.trim;
+                $text ~= " " if $text;
+                $text ~= $code;
+                $text ~= '<';
+            }
+            say "start: ", $e.gist;
+        }
+        elsif $e<end>:exists {
+            if $e<code-type>:exists {
+                my $code = $e<code-type>.trim;
+                $text .= trim-trailing;
+                $text ~= '> ';
+            }
+            say "end: ", $e.gist;
+        }
+        elsif $e<text>:exists {
+            my $txt = $e<text>.trim;
+            my $lchar = $text.comb.tail;
+            if not $text {
+                $text ~= $txt;
+            }
+            elsif $lchar eq '<' {
+                $text ~= $txt ; # '>';
+            }
+            elsif $txt ~~ / '.'|'!'|'?' / {
+                $text .= trim-trailing;	
+                $text ~= $txt;
+            }
+            elsif $lchar eq ' ' {
+                $text ~= $txt;
+            }
+            else {
+                die "FATAL: Unexpected situation";
+            }
+            say "text: ", $txt;
+        }
+        else {
+            say "inside: ", $e.gist;
+        }
+    }
+}
+say "text: '$text'";
+
+is 1, 1;
+
+done-testing;
