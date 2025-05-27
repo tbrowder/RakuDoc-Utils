@@ -39,12 +39,15 @@ sub clean($txt is copy, :$step) {
 my @tin = [
     " B < I < one > \nU < two > > ",  # simple
     " B < I < one > \nU < two > > >", # unbalanced <>
+    # all FCs that *should* be handled
+    "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
 ];
 
 # expected results
 my @texp = [
     "B<I<one> U<two>>",  # simple
     "B<I<one> U<two>>>", # unbalanced <>
+    "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
 ];
 
 for @tin.kv -> $i, $txt {

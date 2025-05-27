@@ -6,6 +6,7 @@ use RakuDoc::Load;
 
 use RakuDoc::Utils::Listener;
 use RakuDoc::Utils::Classes;
+use RakuDoc::Utils::Vars;
 
 =begin comment
 
@@ -91,6 +92,16 @@ sub extract-formatted-text( # was:  clean-text(
                 # start of a chunk of formatted text
                 #===================================
                 my $code = $e<code-type>.trim;
+                unless %formatting-codes{$code}:exists {
+                    die "FATAL: Unknown formatting code '$code'";
+                }
+                unless %formatting-codes{$code} {
+                    die qq:to/HERE/;
+                    Unhandled formatting code '$code'.
+                    Ignoring it, but file an issue if you need it handled.
+                    HERE
+                }
+
                 my $style = Style.new: :style($code);
 
                 # possibilies:

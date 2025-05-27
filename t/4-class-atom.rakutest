@@ -1,0 +1,7 @@
+use Test;
+
+use RakuDoc::Utils;
+
+is 1, 1;
+
+done-testing;

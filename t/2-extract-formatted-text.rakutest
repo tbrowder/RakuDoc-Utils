@@ -24,7 +24,27 @@ $o.walk-pod: $pod-tree.head;
 cmp-ok @events.elems, '>', 0, "formatted-text";
 isa-ok @events.head, Hash;
 
+# now do a series of more detailed tests
+my @tin = [
+    "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+];
+my @texp = [
+    # handled codes
+    "B<I<U<O<M<C<L<N<E<V<X<1>>>>>>>>>>>",
+    # other codes
+];
+
+for @tin.kv -> $i, $txt {
+    my $tout = extract-formatted-text $txt;
+    is $tout, @texp[$i];
+}
+
+done-testing;
+
+=finish
+
 my $text = "";
+# following is how the real sub was developed
 if 0 {
     for @events -> $e {
         if $e<start>:exists {

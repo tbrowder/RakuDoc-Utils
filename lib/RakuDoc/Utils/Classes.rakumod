@@ -20,7 +20,7 @@ class Atom is export {
         
     }
 
-    method print {
+    method debug-print {
         my $txt   = "";
         my $front = "";
         my $back  = "";
