@@ -1,10 +1,5 @@
 unit module RakuDoc::Utils::Classes;
 
-role Node is export {
-    has $.text;
-    has @.nodes;
-}
-
 class Slice is export {
 }
 
