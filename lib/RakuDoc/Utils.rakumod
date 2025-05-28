@@ -36,6 +36,25 @@ Step 2. Parse the chunks into Atoms for further word processing:
 
 =end comment
 
+# Given the text of a RakuDoc document, extract the nodes into
+# a list.
+# Each node should contain at least the attributes used in
+# module Pod::TreeWalker plus any others:
+#   + type
+#   + name
+#   + text
+#   + its level number
+#   + list of child nodes
+#
+# The top level is 0. Children of level 0 are level 1, and so on.
+class Node is export {
+    has $.type;
+    has $.name is required;
+    has $.text;
+    has $.level;
+    has @.nodes;
+}
+
 sub full-raw(
     $text-in,
     :$debug,
@@ -60,7 +79,7 @@ sub raw(
     my @codes = [];
     my $text = "";
     EVENT: for @events.kv -> $i, $event {
-        die "FATAL: a non-has event" unless $event ~~ Hash;
+        die "FATAL: a non-hash event" unless $event ~~ Hash;
         if 0 and $debug {
             my $keys = $event.keys.join(" ");
             say "DEBUG:keys: $keys";

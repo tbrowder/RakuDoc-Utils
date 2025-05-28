@@ -1,3 +1,7 @@
+Provide a "slice" sub to handle such thinks as page breaks
+  + mandatory arg should be the name, e.g.
+    sub slice($text, :$name!) {...}
+
 Get samples from roast
 
 Divide parsing into more stages:
