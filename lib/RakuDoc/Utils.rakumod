@@ -1,7 +1,6 @@
 unit module RakuDoc::Utils;
 
 use Pod::TreeWalker;
-#use Pod::TreeWalker::Listener;
 use RakuDoc::Load;
 
 use RakuDoc::Utils::Listener;
@@ -36,6 +35,12 @@ Step 2. Parse the chunks into Atoms for further word processing:
    accordingly.
 
 =end comment
+
+sub full-raw(
+    $text-in,
+    :$debug,
+    ) is export {
+}
 
 # Given formatted text, extract it as is.
 # the input text must use NO pod except formatting codes.
