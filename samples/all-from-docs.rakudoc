@@ -1,0 +1,35 @@
+# chunks from the docs to exercise my parser
+
+# RakuDoc directives and bare paragraphs
+
+# Four types of blocks:
+#
+#   delimited
+#   paragraph
+#   abbreviated
+#   declarator
+
+#===  Delimited blocks
+#   Bounded by =begin/=end markers followed by the 'typename' of the block
+#
+#   'typenames' with all uppercase or lowercase are reserved.
+#   After the typename, the rest of the line, and any following lines 
+#     with a leading "=" are treated as configuration information
+#     for that block. Such may be treated several ways:
+#       List: :key1[]
+#       Hash: :key2()
+#       String: :key3<>
+#       Boolean: :key4
+#       Int:     :key5
+#       Number:  :key6
+
+=begin head1  
+Top Level Heading
+=end
+
+#===  Paragraph blocks
+
+#===  Abbreviated blocks
+
+#===  Declarator blocks
+

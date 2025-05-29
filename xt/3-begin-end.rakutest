@@ -1,0 +1,38 @@
+use Test;
+
+# a comment
+my $x = 1;
+
+=head1 First
+
+is $x, 1;
+
+isa-ok $=pod[0], Pod::Heading, "First";
+
+=begin pod
+
+=head2 Second
+
+=end pod
+
+=begin pod
+
+=head3 Third
+
+=end pod
+
+$x = 2;
+is $x, 2;
+
+isa-ok $=pod[0], Pod::Heading, "First";
+isa-ok $=pod[0][0], Pod::Heading, "Second";
+isa-ok $=pod[0][0][0], Pod::Heading, "Third";
+
+say $=pod.gist;
+
+#for $=pod -> {
+#    say $_.gist;
+#}
+
+done-testing;
+
