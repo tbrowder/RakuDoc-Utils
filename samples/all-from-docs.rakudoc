@@ -28,8 +28,12 @@ Top Level Heading
 =end
 
 #===  Paragraph blocks
+=for para :bold
+One or more lines
 
 #===  Abbreviated blocks
+=head1 Top Level Heading
+=head2 Second level heading
 
 #===  Declarator blocks
 

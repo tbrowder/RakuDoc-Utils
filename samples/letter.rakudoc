@@ -1,5 +1,26 @@
 =begin pod
 
+=configure :font<Times> :size(12)
+= :left-margin(72)
+= :right-margin(72)
+= :top-margin(72)
+= :bottom-margin(72)
+
+=for para :bold :size(12)
+Thomas M. Browder, Jr.
+=for para
+114 Shoreline Drive
+=for para
+Gulf Breeze FL 32561-4149
+=for para :size(11)
+850-830-8078
+
+Dear Joe,
+
+How are you?
+
+=for para Sincerely,
+=for para Tom
 
 
 =end pod
